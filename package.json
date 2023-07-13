@@ -1,0 +1,23 @@
+{
+  "name": "advent-of-code",
+  "version": "1.0.0",
+  "description": "🎄 🎅 🎁 🤶 🦌 🍪 👼 🎄 🎅 🎁 🤶 🦌 🍪 👼",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lewispricey/advent-of-code.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lewispricey/advent-of-code/issues"
+  },
+  "homepage": "https://github.com/lewispricey/advent-of-code#readme",
+  "devDependencies": {
+    "jest": "^29.6.1"
+  }
+}
