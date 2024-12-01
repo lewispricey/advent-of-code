@@ -1,8 +1,10 @@
-# advent-of-code
+# Advent Of Code
 
 🎄 🎅 🎁 🤶 🦌 🍪 👼 🎄 🎅 🎁 🤶 🦌 🍪 👼
 
 This repo contains solutions to the advent of code challenges from https://adventofcode.com/
+
+---
 
 ⚠️ WARNING ⚠️
 
