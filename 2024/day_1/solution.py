@@ -1,4 +1,4 @@
-
+import re
 
 def read_data_file(file_name):
     with open(f"{file_name}.txt", "r") as file:
@@ -16,14 +16,14 @@ def format_input(data_set):
         left_list.append(int(split_digits[0]))
         right_list.append(int(split_digits[1]))
 
-    left_list.sort()
-    right_list.sort()
-
     return (left_list, right_list)
 
 
 def calculate_row_differences(l, r):
+    l.sort()
+    r.sort()
     differences = [max(l[i] - r[i], r[i] - l[i]) for i in range(len(l))]
+
     return sum(differences)
 
 
