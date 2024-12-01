@@ -1,5 +1,3 @@
-import re
-
 def read_data_file(file_name):
     with open(f"{file_name}.txt", "r") as file:
         return file.read()
