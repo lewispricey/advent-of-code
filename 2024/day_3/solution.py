@@ -26,11 +26,9 @@ def part_2_extract_pairs(currupted_mem):
     for element in extracted_instructions:
         if element == "don't()":
             execute = False
-            continue
 
         elif element == "do()":
             execute = True
-            continue
 
         elif execute:
             pairs.append(tuple(int(num) for num in element.split(",")))
