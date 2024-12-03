@@ -27,16 +27,15 @@ def part_2_extract_pairs(currupted_mem):
         if element == "don't()":
             execute = False
             continue
+
         elif element == "do()":
             execute = True
             continue
 
-        if execute:
+        elif execute:
             pairs.append(tuple(int(num) for num in element.split(",")))
 
     return pairs
-    # i feel like this is a bit convoluted
-    # a negative look behind regex could potentualy work to say not don't but any amount of anything else to prevent the loop logic
 
 
 if __name__ == "__main__":
