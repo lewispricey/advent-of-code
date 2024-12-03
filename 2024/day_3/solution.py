@@ -13,6 +13,7 @@ def sum_multiplication_pairs(pairs):
 def part_1_extract_pairs(currupted_mem):
     regex = r"(?<=mul\()\d+,\d+(?=\))"
     invocation_args = re.findall(regex, currupted_mem)
+
     return [tuple(int(num) for num in pair.split(",")) for pair in invocation_args]
 
 
