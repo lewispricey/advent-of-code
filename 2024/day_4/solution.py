@@ -47,7 +47,7 @@ def part_2(grid):
 
     found_count = 0
 
-    valid_patterns = ["SAM", "MAS"]
+    valid_patterns = ["SM", "MS"]
 
     for row in range(row_count):
         for column in range(col_count):
@@ -62,13 +62,9 @@ def part_2(grid):
             if not row_bounds or not col_bounds:
                 continue
 
-            left_diagonal = (
-                grid[row - 1][column - 1] + current_char + grid[row + 1][column + 1]
-            )
+            left_diagonal = grid[row - 1][column - 1] + grid[row + 1][column + 1]
+            right_diagonal = grid[row - 1][column + 1] + grid[row + 1][column - 1]
 
-            right_diagonal = (
-                grid[row - 1][column + 1] + current_char + grid[row + 1][column - 1]
-            )
             is_valid = all(
                 [
                     left_diagonal in valid_patterns,
