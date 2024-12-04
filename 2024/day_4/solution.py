@@ -19,8 +19,6 @@ def part_1(grid):
     combined_row_and_cols = ",".join([*grid, *columns])
     counter += count_contents(combined_row_and_cols)
 
-    print("Count before diagonals", counter)
-
     left_diagonals = {}
     for row in range(row_count):
         for col in range(col_count):
@@ -45,7 +43,7 @@ def part_1(grid):
 
 
 if __name__ == "__main__":
-    data = read_data_file("test_data")
-    # data = read_data_file("full_data")
+    data = read_data_file("full_data")
+
     part_1_total = part_1(data)
     print("Part 1:", part_1_total)
