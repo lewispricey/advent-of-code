@@ -42,8 +42,50 @@ def part_1(grid):
     return counter
 
 
+def part_2(grid):
+    # find the A charactors and check diagnoaly to see whether these have the required charactors
+    row_count = len(grid)
+    col_count = len(grid[0])
+
+    found_count = 0
+
+    valid_patterns = ["SAM", "MAS"]
+
+    for row in range(row_count):
+        for column in range(col_count):
+            current_item = grid[row][column]
+
+            if current_item != "A":
+                continue
+
+            row_bounds = row - 1 >= 0 and row + 1 < row_count
+            col_bounds = column - 1 >= 0 and column + 1 < col_count
+
+            if row_bounds and col_bounds:
+                left_diagonal = (
+                    grid[row - 1][column - 1] + current_item + grid[row + 1][column + 1]
+                )
+
+                right_diagonal = (
+                    grid[row - 1][column + 1] + current_item + grid[row + 1][column - 1]
+                )
+                is_valid = all(
+                    [
+                        left_diagonal in valid_patterns,
+                        right_diagonal in valid_patterns,
+                    ]
+                )
+
+                if is_valid:
+                    found_count += 1
+
+    return found_count
+
+
 if __name__ == "__main__":
     data = read_data_file("full_data")
 
     part_1_total = part_1(data)
+    part_2_total = part_2(data)
     print("Part 1:", part_1_total)
+    print("Part 2:", part_2_total)
