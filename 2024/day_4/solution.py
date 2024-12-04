@@ -20,20 +20,19 @@ def part_1(grid):
     counter += count_contents(combined_row_and_cols)
 
     left_diagonals = {}
-    for row in range(row_count):
-        for col in range(col_count):
-            key = row - col
-            if key not in left_diagonals:
-                left_diagonals[key] = ""
-            left_diagonals[key] += grid[row][col]
-
     right_diagonals = {}
+
     for row in range(row_count):
         for col in range(col_count):
-            key = row + col
-            if key not in right_diagonals:
-                right_diagonals[key] = ""
-            right_diagonals[key] += grid[row][col]
+            left_key = row - col
+            if left_key not in left_diagonals:
+                left_diagonals[left_key] = ""
+            left_diagonals[left_key] += grid[row][col]
+
+            right_key = row + col
+            if right_key not in right_diagonals:
+                right_diagonals[right_key] = ""
+            right_diagonals[right_key] += grid[row][col]
 
     combined_diagonal_values = [*left_diagonals.values(), *right_diagonals.values()]
 
