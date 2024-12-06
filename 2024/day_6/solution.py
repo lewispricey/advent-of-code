@@ -5,6 +5,8 @@ def read_data_file(file_name):
 
 class GuardTracker:
     def __init__(self):
+        self.possible_moves = {"N": (-1, 0), "E": (0, 1), "S": (1, 0), "W": (0, -1)}
+        self.directions = {"^": "N", ">": "E", "V": "S", "<": "W"}
         self.guard_location = None
         self.guard_direction = None
         self.map = {}
@@ -13,13 +15,11 @@ class GuardTracker:
     def create_map(self, map_data):
         map = dict()
 
-        directions = {"^": "N", ">": "E", "V": "S", "<": "W"}
-
         for r, row in enumerate(map_data):
             for c, col in enumerate(row):
-                if col in directions:
+                if col in self.directions:
                     self.guard_location = (r, c)
-                    self.guard_direction = directions[col]
+                    self.guard_direction = self.directions[col]
                     map[(r, c)] = "x"
                 else:
                     map[(r, c)] = col
@@ -29,15 +29,8 @@ class GuardTracker:
         return map
 
     def move_guard(self):
-        moves = {"N": (-1, 0), "E": (0, 1), "S": (1, 0), "W": (0, -1)}
-
         while True:
-            next_step = tuple(
-                [
-                    moves[self.guard_direction][i] + self.guard_location[i]
-                    for i in range(2)
-                ]
-            )
+            next_step = self.get_next_step()
 
             if next_step not in self.map:
                 return 0
@@ -46,10 +39,8 @@ class GuardTracker:
                 if (self.guard_direction, *next_step) in self.walls_hit:
                     return 1
                 else:
-                    rotations = {"N": "E", "E": "S", "S": "W", "W": "N"}
                     self.walls_hit.append((self.guard_direction, *next_step))
-                    self.guard_direction = rotations[self.guard_direction]
-
+                    self.rotate_guard()
             else:
                 self.guard_location = next_step
                 self.map[next_step] = "x"
@@ -58,15 +49,24 @@ class GuardTracker:
         final_map = list(self.map.values())
         return final_map.count("x")
 
+    def rotate_guard(self):
+        rotations = {"N": "E", "E": "S", "S": "W", "W": "N"}
+        self.guard_direction = rotations[self.guard_direction]
+
+    def get_next_step(self):
+        return tuple(
+            [
+                self.possible_moves[self.guard_direction][i] + self.guard_location[i]
+                for i in range(2)
+            ]
+        )
+
     def part_1(self, data):
         self.create_map(data)
         self.move_guard()
         return self.count_visited()
 
     def part_2(self, data):
-        self.guard_location = None
-        self.guard_direction = None
-
         base_map = self.create_map(data)
         loops_found = 0
 
@@ -88,5 +88,6 @@ if __name__ == "__main__":
     guard_tracker = GuardTracker()
     part_1 = guard_tracker.part_1(data)
     part_2 = guard_tracker.part_2(data)
+
     print("part_1:", part_1)
     print("part_2:", part_2)
