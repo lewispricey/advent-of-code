@@ -8,6 +8,7 @@ class GuardTracker:
         self.guard_location = None
         self.guard_direction = None
         self.map = {}
+        self.walls_hit = None
 
     def create_map(self, map_data):
         map = dict()
@@ -24,13 +25,13 @@ class GuardTracker:
                     map[(r, c)] = col
 
         self.map = map
+        self.walls_hit = []
         return map
 
     def move_guard(self):
         moves = {"N": (-1, 0), "E": (0, 1), "S": (1, 0), "W": (0, -1)}
-        count = 0
-        while count < 1000000:
-            count += 1
+
+        while True:
             next_step = tuple(
                 [
                     moves[self.guard_direction][i] + self.guard_location[i]
@@ -39,18 +40,19 @@ class GuardTracker:
             )
 
             if next_step not in self.map:
-                break
+                return 0
 
-            # check if its a hash and roate 90 clock
             if self.map[next_step] == "#":
-                rotations = {"N": "E", "E": "S", "S": "W", "W": "N"}
-                self.guard_direction = rotations[self.guard_direction]
+                if (self.guard_direction, *next_step) in self.walls_hit:
+                    return 1
+                else:
+                    rotations = {"N": "E", "E": "S", "S": "W", "W": "N"}
+                    self.walls_hit.append((self.guard_direction, *next_step))
+                    self.guard_direction = rotations[self.guard_direction]
 
             else:
                 self.guard_location = next_step
                 self.map[next_step] = "x"
-            # else mark square and update guard position
-        return count
 
     def count_visited(self):
         final_map = list(self.map.values())
@@ -64,28 +66,21 @@ class GuardTracker:
     def part_2(self, data):
         self.guard_location = None
         self.guard_direction = None
-        # create a new map
-        start_map = self.create_map(data)
-        infinite_count = 0
 
-        # loop through the keys
-        for coord in start_map:
+        base_map = self.create_map(data)
+        loops_found = 0
+
+        for coord in base_map:
             print(coord)
-            # create new map
             self.map = self.create_map(data)
-            # update each key to be a new object if not currently an object and not guard location
+            self.walls_hit = []
 
             if self.map[coord] != "#" and coord != self.guard_location:
                 self.map[coord] = "#"
-                loop_count = self.move_guard()
-                if loop_count == 1000000:
-                    infinite_count += 1
+                loops_found += 1 if self.move_guard() else 0
 
-        return infinite_count
+        return loops_found
 
-
-# best solution!!!?
-# just keep track of what wall has been hit at what angle, if the same wall is hit at the same angle then we've been there before
 
 if __name__ == "__main__":
     data = read_data_file("full_data")
@@ -93,5 +88,5 @@ if __name__ == "__main__":
     guard_tracker = GuardTracker()
     part_1 = guard_tracker.part_1(data)
     part_2 = guard_tracker.part_2(data)
-    print(part_1)
-    print(part_2)
+    print("part_1:", part_1)
+    print("part_2:", part_2)
