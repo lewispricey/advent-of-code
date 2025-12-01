@@ -2,34 +2,42 @@ from utils.read_txt import read_txt
 
 
 class Safe:
-    def __init__(self, dial_start, max_dial_position=99):
-        self.dial_position = dial_start
-        self.max_dial_position = max_dial_position
+    def __init__(self):
+        self.dial_position = 50
+        self.max_dial_position = 99
         self.zero_count = 0
 
-    def turn_dial(self, direction, steps):
+    def turn_dial_left(self, steps):
         for _ in range(steps):
-            if direction == "L":
-                self.dial_position -= 1
-                if self.dial_position < 0:
-                    self.dial_position = self.max_dial_position
-            elif direction == "R":
-                self.dial_position += 1
-                if self.dial_position > self.max_dial_position:
-                    self.dial_position = 0
+            self.dial_position -= 1
 
             if self.dial_position == 0:
+                self.zero_count += 1
+            elif self.dial_position < 0:
+                self.dial_position = self.max_dial_position
+
+    def turn_dial_right(self, steps):
+        for _ in range(steps):
+            self.dial_position += 1
+
+            if self.dial_position > self.max_dial_position:
+                self.dial_position = 0
                 self.zero_count += 1
 
 
 if __name__ == "__main__":
     data = read_txt("full_data.txt")
 
-    safe = Safe(dial_start=50)
+    safe = Safe()
 
     for line in data:
         direction = line[0]
-        steps = line[1:]
-        safe.turn_dial(direction, int(steps))
+        steps = int(line[1:])
+
+        match direction:
+            case "L":
+                safe.turn_dial_left(steps)
+            case "R":
+                safe.turn_dial_right(steps)
 
     print(safe.zero_count)
