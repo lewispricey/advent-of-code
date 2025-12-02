@@ -20,13 +20,11 @@ def check_full_sequence(number):
         return False
 
 
-def main(data):
+def main(input_data):
     part_1_sequences = []
     part_2_sequences = []
 
-    for item in data:
-        start, stop = item
-
+    for start, stop in input_data:
         for i in range(start, stop):
             if check_half_sequence(i):
                 part_1_sequences.append(i)
